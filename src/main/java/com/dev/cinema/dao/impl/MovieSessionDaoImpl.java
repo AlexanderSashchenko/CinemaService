@@ -19,7 +19,6 @@ import org.hibernate.Transaction;
 
 @Dao
 public class MovieSessionDaoImpl implements MovieSessionDao {
-
     @Override
     public MovieSession add(MovieSession movieSession) {
         Transaction transaction = null;
@@ -33,7 +32,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Failed to add movie session to database" + e);
+            throw new DataProcessingException("Failed to add movie session to database", e);
         }
     }
 
@@ -49,7 +48,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             cq.select(root).where(cb.and(predicateId, predicateDate));
             return session.createQuery(cq).getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Failed to find available movie sessions" + e);
+            throw new DataProcessingException("Failed to find available movie sessions", e);
         }
     }
 }

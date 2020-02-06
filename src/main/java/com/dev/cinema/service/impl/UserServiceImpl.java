@@ -9,7 +9,6 @@ import com.dev.cinema.util.HashUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
-
     @Inject
     private static UserDao userDao;
 

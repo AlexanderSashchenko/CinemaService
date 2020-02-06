@@ -10,7 +10,6 @@ import java.util.List;
 
 @Service
 public class MovieServiceImpl implements MovieService {
-
     @Inject
     private static MovieDao movieDao;
 

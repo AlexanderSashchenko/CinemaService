@@ -8,8 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class HashUtil {
-
-    private static Logger logger = LogManager.getLogger(HashUtil.class);
+    private static final Logger logger = LogManager.getLogger(HashUtil.class);
 
     public static byte[] getSalt() {
         SecureRandom random = new SecureRandom();

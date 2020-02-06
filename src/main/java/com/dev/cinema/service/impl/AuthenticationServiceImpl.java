@@ -1,6 +1,5 @@
 package com.dev.cinema.service.impl;
 
-import com.dev.cinema.dao.UserDao;
 import com.dev.cinema.exceptions.AuthenticationException;
 import com.dev.cinema.lib.Inject;
 import com.dev.cinema.model.User;
@@ -9,15 +8,12 @@ import com.dev.cinema.service.UserService;
 import com.dev.cinema.util.HashUtil;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
-
-    @Inject
-    private static UserDao userDao;
     @Inject
     private static UserService userService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userDao.findByEmail(email);
+        User user = userService.findByEmail(email);
         if (user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
             return user;
         }

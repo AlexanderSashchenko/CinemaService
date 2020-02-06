@@ -12,7 +12,7 @@ import java.util.List;
 public class MovieServiceImpl implements MovieService {
 
     @Inject
-    private MovieDao movieDao;
+    private static MovieDao movieDao;
 
     @Override
     public Movie add(Movie movie) {

@@ -1,43 +1,40 @@
-package com.dev.cinema.dao.implhql;
+package com.dev.cinema.dao.impl1hql;
 
-import com.dev.cinema.dao.OrderDao;
+import com.dev.cinema.dao.UserDao;
 import com.dev.cinema.exceptions.DataProcessingException;
 import com.dev.cinema.lib.Dao;
-import com.dev.cinema.model.Order;
 import com.dev.cinema.model.User;
 import com.dev.cinema.util.HibernateUtil;
-
-import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @Dao
-public class OrderDaoImpl implements OrderDao {
+public class UserDaoImpl implements UserDao {
     @Override
-    public Order add(Order order) {
+    public User add(User user) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Long orderId = (Long) session.save(order);
+            Long userId = (Long) session.save(user);
             transaction.commit();
-            order.setId(orderId);
-            return order;
+            user.setId(userId);
+            return user;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Failed to add order", e);
+            throw new DataProcessingException("Filed to add user entity", e);
         }
     }
 
     @Override
-    public List<Order> getUserOrders(User user) {
+    public User findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Order where user = :user", Order.class)
-                    .setParameter("user", user).list();
+            return session.createQuery("from User where email = :email", User.class)
+            .setParameter("email", email).uniqueResult();
         } catch (Exception e) {
-            throw new DataProcessingException("Failed to get orders list by user", e);
+            throw new DataProcessingException("Filed to find user entity by email", e);
         }
     }
 }

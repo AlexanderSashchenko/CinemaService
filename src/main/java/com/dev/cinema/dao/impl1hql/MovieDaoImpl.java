@@ -1,4 +1,4 @@
-package com.dev.cinema.dao.implhql;
+package com.dev.cinema.dao.impl1hql;
 
 import com.dev.cinema.dao.MovieDao;
 import com.dev.cinema.exceptions.DataProcessingException;

@@ -1,4 +1,4 @@
-package com.dev.cinema.dao.impl;
+package com.dev.cinema.dao.implhql;
 
 import com.dev.cinema.dao.OrderDao;
 import com.dev.cinema.exceptions.DataProcessingException;
@@ -8,11 +8,6 @@ import com.dev.cinema.model.User;
 import com.dev.cinema.util.HibernateUtil;
 
 import java.util.List;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -39,12 +34,8 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public List<Order> getUserOrders(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Order> cq = cb.createQuery(Order.class);
-            Root<Order> root = cq.from(Order.class);
-            root.fetch("tickets", JoinType.LEFT);
-            cq.select(root).distinct(true).where(cb.equal(root.get("user"), user));
-            return session.createQuery(cq).getResultList();
+            return session.createQuery("from Order where user = :user", Order.class)
+                    .setParameter("user", user).list();
         } catch (Exception e) {
             throw new DataProcessingException("Failed to get orders list by user", e);
         }

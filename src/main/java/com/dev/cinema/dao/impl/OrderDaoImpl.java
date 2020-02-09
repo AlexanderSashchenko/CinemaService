@@ -1,7 +1,5 @@
 package com.dev.cinema.dao.impl;
 
-import java.util.List;
-
 import com.dev.cinema.dao.OrderDao;
 import com.dev.cinema.exceptions.DataProcessingException;
 import com.dev.cinema.lib.Dao;
@@ -9,13 +7,15 @@ import com.dev.cinema.model.Order;
 import com.dev.cinema.model.User;
 import com.dev.cinema.util.HibernateUtil;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 @Dao
 public class OrderDaoImpl implements OrderDao {

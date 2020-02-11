@@ -1,4 +1,4 @@
-package com.dev.cinema.dao.impl;
+package com.dev.cinema.dao.impl1hql;
 
 import com.dev.cinema.dao.CinemaHallDao;
 import com.dev.cinema.exceptions.DataProcessingException;
@@ -7,8 +7,6 @@ import com.dev.cinema.model.CinemaHall;
 import com.dev.cinema.util.HibernateUtil;
 
 import java.util.List;
-
-import javax.persistence.criteria.CriteriaQuery;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -35,10 +33,7 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
     @Override
     public List<CinemaHall> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<CinemaHall> criteriaQuery = session.getCriteriaBuilder()
-                    .createQuery(CinemaHall.class);
-            criteriaQuery.from(CinemaHall.class);
-            return session.createQuery(criteriaQuery).getResultList();
+            return session.createQuery("from CinemaHall", CinemaHall.class).list();
         } catch (Exception e) {
             throw new DataProcessingException("Failed to get all cinema halls from database", e);
         }

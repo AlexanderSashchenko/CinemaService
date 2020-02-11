@@ -1,4 +1,4 @@
-package com.dev.cinema.dao.impl;
+package com.dev.cinema.dao.impl1hql;
 
 import com.dev.cinema.dao.MovieSessionDao;
 import com.dev.cinema.exceptions.DataProcessingException;
@@ -8,11 +8,6 @@ import com.dev.cinema.util.HibernateUtil;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -39,14 +34,13 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     @Override
     public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<MovieSession> cq = cb.createQuery(MovieSession.class);
-            Root<MovieSession> root = cq.from(MovieSession.class);
-            Predicate predicateId = cb.equal(root.get("movie"), movieId);
-            Predicate predicateDate = cb.between(root.get("showTime"),
-                    date.atStartOfDay(), date.plusDays(1).atStartOfDay());
-            cq.select(root).where(cb.and(predicateId, predicateDate));
-            return session.createQuery(cq).getResultList();
+            return session.createQuery("from MovieSession where movie.id = :movieId "
+                    + "and year(showTime) = :year and month(showTime) = :month "
+                    + "and day(showTime) = :day", MovieSession.class)
+                    .setParameter("movieId", movieId)
+                    .setParameter("year", date.getYear())
+                    .setParameter("month", date.getMonthValue())
+                    .setParameter("day", date.getDayOfMonth()).list();
         } catch (Exception e) {
             throw new DataProcessingException("Failed to find available movie sessions", e);
         }

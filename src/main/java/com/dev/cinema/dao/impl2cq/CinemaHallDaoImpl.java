@@ -1,9 +1,8 @@
-package com.dev.cinema.dao.impl;
+package com.dev.cinema.dao.impl2cq;
 
-import com.dev.cinema.dao.MovieDao;
+import com.dev.cinema.dao.CinemaHallDao;
 import com.dev.cinema.exceptions.DataProcessingException;
-import com.dev.cinema.lib.Dao;
-import com.dev.cinema.model.Movie;
+import com.dev.cinema.model.CinemaHall;
 import com.dev.cinema.util.HibernateUtil;
 
 import java.util.List;
@@ -13,34 +12,33 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-@Dao
-public class MovieDaoImpl implements MovieDao {
+public class CinemaHallDaoImpl implements CinemaHallDao {
     @Override
-    public Movie add(Movie movie) {
+    public CinemaHall add(CinemaHall cinemaHall) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Long movieId = (Long) session.save(movie);
+            Long itemId = (Long) session.save(cinemaHall);
             transaction.commit();
-            movie.setId(movieId);
-            return movie;
+            cinemaHall.setId(itemId);
+            return cinemaHall;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Filed to add movie entity", e);
+            throw new DataProcessingException("Failed to add cinema hall to database", e);
         }
     }
 
     @Override
-    public List<Movie> getAll() {
+    public List<CinemaHall> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<Movie> criteriaQuery = session.getCriteriaBuilder()
-                    .createQuery(Movie.class);
-            criteriaQuery.from(Movie.class);
+            CriteriaQuery<CinemaHall> criteriaQuery = session.getCriteriaBuilder()
+                    .createQuery(CinemaHall.class);
+            criteriaQuery.from(CinemaHall.class);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Failed to get movies list", e);
+            throw new DataProcessingException("Failed to get all cinema halls from database", e);
         }
     }
 }

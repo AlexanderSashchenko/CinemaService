@@ -2,22 +2,28 @@ package com.dev.cinema.dao.impl1hql;
 
 import com.dev.cinema.dao.MovieSessionDao;
 import com.dev.cinema.exceptions.DataProcessingException;
-import com.dev.cinema.lib.Dao;
 import com.dev.cinema.model.MovieSession;
-import com.dev.cinema.util.HibernateUtil;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class MovieSessionDaoImpl implements MovieSessionDao {
+    private final SessionFactory sessionFactory;
+
+    public MovieSessionDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public MovieSession add(MovieSession movieSession) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             Long itemId = (Long) session.save(movieSession);
             transaction.commit();
@@ -33,7 +39,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
 
     @Override
     public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from MovieSession where movie.id = :movieId "
                     + "and year(showTime) = :year and month(showTime) = :month "
                     + "and day(showTime) = :day", MovieSession.class)

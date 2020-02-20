@@ -33,12 +33,12 @@ public class ShoppingCartController {
         this.movieSessionService = movieSessionService;
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{userId}/shopping-carts")
     public ShoppingCartResponseDto get(@PathVariable("userId") Long id) {
         return getDto(shoppingCartService.getByUser(userService.findById(id)));
     }
 
-    @PostMapping("/{userId}/movie-sessions")
+    @PostMapping("/{userId}/shopping-carts")
     public void addMovieSession(@PathVariable("userId") Long id,
                                 @RequestBody Long movieSessionId) {
         shoppingCartService.addSession(movieSessionService.findById(movieSessionId),

@@ -2,7 +2,6 @@ package com.dev.cinema.controller;
 
 import com.dev.cinema.model.Order;
 import com.dev.cinema.model.Ticket;
-import com.dev.cinema.model.dto.request.OrderRequestDto;
 import com.dev.cinema.model.dto.response.OrderResponseDto;
 import com.dev.cinema.model.dto.response.TicketResponseDto;
 import com.dev.cinema.service.OrderService;
@@ -40,8 +39,7 @@ public class OrderController {
     }
 
     @PostMapping("/{userId}/orders")
-    public void complete(@PathVariable("userId") Long id,
-                         @RequestBody OrderRequestDto orderRequestDto) {
+    public void complete(@RequestBody @PathVariable ("userId") Long id) {
         orderService.completeOrder(userService.findById(id));
     }
 

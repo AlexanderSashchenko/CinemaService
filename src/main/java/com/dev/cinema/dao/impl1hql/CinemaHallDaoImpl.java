@@ -48,8 +48,7 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
     @Override
     public CinemaHall findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from CinemaHall all where id = :id", CinemaHall.class)
-                    .setParameter("id", id).uniqueResult();
+            return session.get(CinemaHall.class, id);
         } catch (Exception e) {
             throw new DataProcessingException("Filed to find cinema hall entity by id", e);
         }

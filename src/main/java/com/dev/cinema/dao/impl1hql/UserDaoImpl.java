@@ -47,8 +47,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from User where id = :id", User.class)
-                    .setParameter("id", id).uniqueResult();
+            return session.get(User.class, id);
         } catch (Exception e) {
             throw new DataProcessingException("Filed to find user entity by id", e);
         }

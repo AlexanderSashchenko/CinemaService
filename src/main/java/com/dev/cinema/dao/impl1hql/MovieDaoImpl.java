@@ -48,8 +48,7 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     public Movie findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from Movie where id = :id", Movie.class)
-                    .setParameter("id", id).uniqueResult();
+            return session.get(Movie.class, id);
         } catch (Exception e) {
             throw new DataProcessingException("Filed to find movie entity by id", e);
         }

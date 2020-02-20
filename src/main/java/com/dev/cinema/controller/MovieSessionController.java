@@ -46,7 +46,7 @@ public class MovieSessionController {
     }
 
     @PostMapping("/{movieId}/movie-sessions")
-    public void add(@PathVariable("movieId") Long id,
+    public String add(@PathVariable("movieId") Long id,
                     @RequestBody MovieSessionRequestDto movieSessionRequestDto) {
         MovieSession movieSession = new MovieSession();
         movieSession.setMovie(movieService
@@ -55,6 +55,7 @@ public class MovieSessionController {
                 .findById(movieSessionRequestDto.getCinemaHallId()));
         movieSession.setShowTime(LocalDateTime.parse(movieSessionRequestDto.getShowTime()));
         movieSessionService.add(movieSession);
+        return "Added new movie session successfully.";
     }
 
     private MovieSessionResponseDto getDto(MovieSession movieSession) {

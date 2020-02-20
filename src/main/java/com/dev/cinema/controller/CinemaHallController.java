@@ -33,11 +33,12 @@ public class CinemaHallController {
     }
 
     @PostMapping
-    public void add(@RequestBody CinemaHallRequestDto cinemaHallRequestDto) {
+    public String add(@RequestBody CinemaHallRequestDto cinemaHallRequestDto) {
         CinemaHall cinemaHall = new CinemaHall();
         cinemaHall.setCapacity(cinemaHallRequestDto.getCapacity());
         cinemaHall.setDescription(cinemaHallRequestDto.getDescription());
         cinemaHallService.add(cinemaHall);
+        return "Added new cinema hall successfully.";
     }
 
     private CinemaHallResponseDto getDto(CinemaHall cinemaHall) {

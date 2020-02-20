@@ -39,8 +39,9 @@ public class OrderController {
     }
 
     @PostMapping("/{userId}/orders")
-    public void complete(@RequestBody @PathVariable ("userId") Long id) {
+    public String complete(@RequestBody @PathVariable ("userId") Long id) {
         orderService.completeOrder(userService.findById(id));
+        return "Order successfully completed";
     }
 
     private OrderResponseDto getOrderDto(Order order) {

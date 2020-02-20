@@ -55,8 +55,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     @Override
     public MovieSession findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from MovieSession where id = :id", MovieSession.class)
-                    .setParameter("id", id).uniqueResult();
+            return session.get(MovieSession.class, id);
         } catch (Exception e) {
             throw new DataProcessingException("Filed to find movie session entity by id", e);
         }

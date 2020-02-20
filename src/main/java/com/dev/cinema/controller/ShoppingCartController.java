@@ -39,10 +39,11 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/{userId}/shopping-carts")
-    public void addMovieSession(@PathVariable("userId") Long id,
+    public String addMovieSession(@PathVariable("userId") Long id,
                                 @RequestBody Long movieSessionId) {
         shoppingCartService.addSession(movieSessionService.findById(movieSessionId),
                 userService.findById(id));
+        return "Added new movie session to shopping cart";
     }
 
     private ShoppingCartResponseDto getDto(ShoppingCart shoppingCart) {

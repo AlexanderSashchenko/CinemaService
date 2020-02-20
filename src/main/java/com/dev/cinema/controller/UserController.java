@@ -25,7 +25,7 @@ public class UserController {
         this.authenticationService = authenticationService;
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/{email:.+}")
     public UserResponseDto getByEmail(@PathVariable("email") String email) {
         User user = userService.findByEmail(email);
         UserResponseDto userResponseDto = new UserResponseDto();
@@ -35,7 +35,8 @@ public class UserController {
     }
 
     @PostMapping
-    public void add(@RequestBody UserRequestDto userRequestDto) {
+    public String add(@RequestBody UserRequestDto userRequestDto) {
         authenticationService.register(userRequestDto.getEmail(), userRequestDto.getPassword());
+        return "Added new user successfully";
     }
 }

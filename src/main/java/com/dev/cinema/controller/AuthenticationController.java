@@ -15,12 +15,14 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public void login(@RequestBody UserRequestDto userRequestDto) {
+    public String login(@RequestBody UserRequestDto userRequestDto) {
         authenticationService.login(userRequestDto.getEmail(), userRequestDto.getPassword());
+        return "Logged in successfully.";
     }
 
     @PostMapping("/registration")
-    public void register(@RequestBody UserRequestDto userRequestDto) {
+    public String register(@RequestBody UserRequestDto userRequestDto) {
         authenticationService.register(userRequestDto.getEmail(), userRequestDto.getPassword());
+        return "Registration completed.";
     }
 }

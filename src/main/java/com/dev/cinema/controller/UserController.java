@@ -5,6 +5,7 @@ import com.dev.cinema.model.dto.request.UserRequestDto;
 import com.dev.cinema.model.dto.response.UserResponseDto;
 import com.dev.cinema.service.AuthenticationService;
 import com.dev.cinema.service.UserService;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String add(@RequestBody UserRequestDto userRequestDto) {
+    public String add(@RequestBody @Valid UserRequestDto userRequestDto) {
         authenticationService.register(userRequestDto.getEmail(), userRequestDto.getPassword());
         return "Added new user successfully";
     }

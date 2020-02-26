@@ -10,10 +10,9 @@ import com.dev.cinema.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,19 +27,21 @@ public class OrderController {
         this.userService = userService;
     }
 
-    @GetMapping("/{userId}/orders")
-    public List<OrderResponseDto> getOrderHistory(@PathVariable("userId") Long id) {
+    @GetMapping("/orders")
+    public List<OrderResponseDto> getOrderHistory(Authentication authentication) {
+        String email = authentication.getName();
         List<Order> ordersList
-                = orderService.getOrderHistory(userService.findById(id));
+                = orderService.getOrderHistory(userService.findByEmail(email));
         return ordersList
                 .stream()
                 .map(this::getOrderDto)
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/{userId}/orders")
-    public String complete(@RequestBody @PathVariable ("userId") Long id) {
-        orderService.completeOrder(userService.findById(id));
+    @PostMapping("/orders")
+    public String complete(Authentication authentication) {
+        String email = authentication.getName();
+        orderService.completeOrder(userService.findByEmail(email));
         return "Order successfully completed";
     }
 

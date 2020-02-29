@@ -1,12 +1,15 @@
 package com.dev.cinema.model;
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
 import lombok.Data;
 
 @Entity
@@ -22,5 +25,10 @@ public class User {
 
     private  String password;
 
-    private byte[] salt;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles = new HashSet<>();
+
+    public void setRole(Role role) {
+        roles.add(role);
+    }
 }

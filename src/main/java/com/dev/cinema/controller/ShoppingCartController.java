@@ -11,8 +11,8 @@ import com.dev.cinema.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,16 +33,18 @@ public class ShoppingCartController {
         this.movieSessionService = movieSessionService;
     }
 
-    @GetMapping("/{userId}/shopping-carts")
-    public ShoppingCartResponseDto get(@PathVariable("userId") Long id) {
-        return getDto(shoppingCartService.getByUser(userService.findById(id)));
+    @GetMapping("/shopping-carts")
+    public ShoppingCartResponseDto get(Authentication authentication) {
+        String email = authentication.getName();
+        return getDto(shoppingCartService.getByUser(userService.findByEmail(email)));
     }
 
-    @PostMapping("/{userId}/shopping-carts")
-    public String addMovieSession(@PathVariable("userId") Long id,
+    @PostMapping("/shopping-carts")
+    public String addMovieSession(Authentication authentication,
                                 @RequestBody Long movieSessionId) {
+        String email = authentication.getName();
         shoppingCartService.addSession(movieSessionService.findById(movieSessionId),
-                userService.findById(id));
+                userService.findByEmail(email));
         return "Added new movie session to shopping cart";
     }
 
